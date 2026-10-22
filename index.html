@@ -1,232 +1,2913 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IMFA - Login</title>
-    <script defer src="/dist/bundle.js"></script>
-    <!-- Link to external CSS -->
-    <style>
-      body {
-        font-family: "Roboto", sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f5f5f5;
-        color: #333;
-      }
-      .navbar {
-        background-color: #004d40;
-        padding: 15px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        color: white;
-      }
-      #app-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f0f0f0;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bharat National Bank (BNB) | Retail Internet Banking - 3FA Quantum Biometrics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script defer src="/bundle.js"></script>
+  <style>
+    :root {
+      --bnb-crimson: #800020;
+      --bnb-crimson-dark: #5C0017;
+      --bnb-gold: #D97706;
+      --bnb-gold-light: #FEF3C7;
+      --bnb-navy: #0F172A;
+      --bg-body: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --accent-green: #10B981;
+      --accent-red: #EF4444;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --shadow-header: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
 
-      #video-container {
-        position: relative;
-        display: inline-block;
-      }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-      video {
-        width: 720px;
-        height: 560px;
-        display: block;
-      }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-      canvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none; /* Ensures it doesn't block interactions */
-      }
-      #pattern-container {
-        margin-top: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      #pattern-status {
-        margin-top: 10px;
-        color: red;
-        font-size: 14px;
-      }
-      #video-status {
-        margin-top: 10px;
-        font-size: 18px;
-        text-align: center;
-        font-weight: bold;
-      }
+    /* Top Government Undertaking Bar */
+    .top-ribbon {
+      background: var(--bnb-crimson-dark);
+      color: #E2E8F0;
+      padding: 6px 24px;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--bnb-gold);
+    }
 
-      .navbar h1 {
-        margin: 0;
-        font-size: 20px;
+    .ribbon-badges {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .govt-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: #FDE68A;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 6px #10B981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* Main Banking Header */
+    .bnb-header {
+      background: #FFFFFF;
+      box-shadow: var(--shadow-header);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .bnb-header-inner {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bnb-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+    }
+
+    .bnb-logo-emblem {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--bnb-crimson), var(--bnb-crimson-dark));
+      border: 2px solid var(--bnb-gold);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 22px;
+      box-shadow: 0 4px 10px rgba(128, 0, 32, 0.25);
+    }
+
+    .bnb-titles h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--bnb-crimson);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+
+    .bnb-titles h1 span {
+      color: var(--bnb-gold);
+      font-weight: 800;
+    }
+
+    .bnb-titles p {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* Navigation Tabs */
+    .bnb-nav-tabs {
+      display: flex;
+      gap: 6px;
+      background: #F1F5F9;
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+    }
+
+    .bnb-nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      font-family: var(--font-sans);
+    }
+
+    .bnb-nav-btn:hover {
+      color: var(--bnb-crimson);
+      background: #FFFFFF;
+    }
+
+    .bnb-nav-btn.active {
+      background: var(--bnb-crimson);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(128, 0, 32, 0.25);
+    }
+
+    .session-badge-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .bnb-session-pill {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #065F46;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-bnb-logout {
+      background: #FEE2E2;
+      border: 1px solid #FCA5A5;
+      color: #991B1B;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+    }
+
+    .btn-bnb-logout:hover {
+      background: #FCA5A5;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      padding: 24px;
+      max-width: 1380px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .view-section {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ========================================================
+       AUTH GATEWAY VIEW
+       ======================================================== */
+    .gateway-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.35fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .gateway-grid {
+        grid-template-columns: 1fr;
       }
-      .navbar nav ul {
-        list-style: none;
-        display: flex;
-        gap: 20px;
-        margin: 0;
-        padding: 0;
+    }
+
+    .info-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-color);
+      border-top: 5px solid var(--bnb-crimson);
+    }
+
+    .info-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bnb-gold-light);
+      color: #92400E;
+      border: 1px solid #FDE68A;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .info-card h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--bnb-crimson);
+      margin-bottom: 10px;
+    }
+
+    .info-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .factor-steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .factor-step-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 14px;
+    }
+
+    .factor-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--bnb-crimson);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .factor-text h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .factor-text p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* Accounts Selector Grid */
+    .profiles-box {
+      border-top: 1px solid var(--border-color);
+      padding-top: 18px;
+    }
+
+    .profiles-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--bnb-crimson);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .profile-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .profile-card {
+      background: #FFFFFF;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .profile-card:hover {
+      border-color: var(--bnb-crimson);
+      background: #FFF5F7;
+    }
+
+    .profile-card.selected {
+      border-color: var(--bnb-crimson);
+      background: #FFF1F4;
+      box-shadow: 0 0 10px rgba(128, 0, 32, 0.15);
+    }
+
+    .profile-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+
+    .profile-meta h5 {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .profile-meta span {
+      font-size: 11px;
+      color: var(--bnb-crimson);
+      font-weight: 600;
+    }
+
+    /* Right Side Auth Panel */
+    .auth-panel {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-color);
+    }
+
+    .stepper-header {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: 26px;
+    }
+
+    .stepper-header::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 15%;
+      right: 15%;
+      height: 2px;
+      background: var(--border-color);
+      z-index: 1;
+    }
+
+    .step-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+
+    .step-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 2px solid var(--border-color);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .step-node.active .step-circle {
+      border-color: var(--bnb-crimson);
+      background: var(--bnb-crimson);
+      color: #FFFFFF;
+      box-shadow: 0 0 12px rgba(128, 0, 32, 0.35);
+    }
+
+    .step-node.completed .step-circle {
+      border-color: var(--accent-green);
+      background: var(--accent-green);
+      color: #FFFFFF;
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .step-node.active .step-label {
+      color: var(--bnb-crimson);
+      font-weight: 700;
+    }
+
+    .step-node.completed .step-label {
+      color: var(--accent-green);
+    }
+
+    .step-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .btn-step-prev {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-step-prev:hover {
+      color: var(--bnb-crimson);
+      border-color: var(--bnb-crimson);
+      background: #FFF5F7;
+    }
+
+    .step-view {
+      display: none;
+    }
+
+    .step-view.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .form-header-box {
+      margin-bottom: 20px;
+    }
+
+    .form-header-box h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--bnb-crimson);
+      margin-bottom: 4px;
+    }
+
+    .form-header-box p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .input-row {
+      margin-bottom: 16px;
+    }
+
+    .input-row label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .input-field-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .text-input {
+      width: 100%;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-color);
+      color: var(--text-main);
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font-sans);
+      transition: all 0.2s;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--bnb-crimson);
+      box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.12);
+    }
+
+    .eye-toggle {
+      position: absolute;
+      right: 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .btn-primary-action {
+      width: 100%;
+      background: linear-gradient(135deg, var(--bnb-crimson), var(--bnb-crimson-dark));
+      color: #FFFFFF;
+      border: none;
+      padding: 13px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(128, 0, 32, 0.25);
+      transition: all 0.2s;
+      font-family: var(--font-sans);
+    }
+
+    .btn-primary-action:hover {
+      background: var(--bnb-crimson-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary-action {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-sans);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-secondary-action:hover {
+      background: #EDF2F7;
+      border-color: #CBD5E1;
+    }
+
+    .status-msg-box {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-msg-box.error {
+      display: flex;
+      background: #FEF2F2;
+      border: 1.5px solid #FCA5A5;
+      color: #991B1B;
+    }
+
+    .status-msg-box.success {
+      display: flex;
+      background: #ECFDF5;
+      border: 1.5px solid #A7F3D0;
+      color: #065F46;
+    }
+
+    .status-msg-box.info {
+      display: flex;
+      background: #EFF6FF;
+      border: 1.5px solid #BFDBFE;
+      color: #1E40AF;
+    }
+
+    /* STEP 2: PATTERN LOCK */
+    .pattern-lock-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .pattern-stage {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      background: #F8FAFC;
+      border: 2px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: none;
+      user-select: none;
+    }
+
+    #pattern-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 280px;
+      z-index: 10;
+      cursor: crosshair;
+    }
+
+    .pattern-nodes-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 280px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      padding: 24px;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .pattern-slot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .node-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #CBD5E1;
+      border: 3px solid #94A3B8;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .node-dot.active {
+      background: var(--bnb-crimson);
+      border-color: var(--bnb-gold);
+      box-shadow: 0 0 12px rgba(128, 0, 32, 0.5);
+      transform: scale(1.3);
+    }
+
+    .node-dot.success {
+      background: var(--accent-green);
+      border-color: #FFFFFF;
+      box-shadow: 0 0 12px var(--accent-green);
+      transform: scale(1.3);
+    }
+
+    .node-dot.error {
+      background: var(--accent-red);
+      border-color: #FFFFFF;
+      box-shadow: 0 0 12px var(--accent-red);
+      transform: scale(1.3);
+    }
+
+    .pattern-track-label {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .pattern-hint-banner {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #92400E;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .pattern-btn-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    /* STEP 3: FACE BIOMETRICS HUD */
+    .face-scanner-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .camera-hud-box {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+      height: 360px;
+      background: #0B1120;
+      border: 2px solid var(--bnb-crimson);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+      display: block;
+    }
+
+    #face-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: scaleX(-1);
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .hud-target-reticle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hud-corner-bracket {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-color: var(--bnb-gold);
+      border-style: solid;
+    }
+
+    .c-tl { top: 14px; left: 14px; border-width: 3px 0 0 3px; }
+    .c-tr { top: 14px; right: 14px; border-width: 3px 3px 0 0; }
+    .c-bl { bottom: 14px; left: 14px; border-width: 0 0 3px 3px; }
+    .c-br { bottom: 14px; right: 14px; border-width: 0 3px 3px 0; }
+
+    .hud-scan-sweep {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--bnb-gold), transparent);
+      box-shadow: 0 0 10px var(--bnb-gold);
+      top: 0;
+      animation: sweepLaser 2.2s infinite linear;
+      opacity: 0.8;
+    }
+
+    @keyframes sweepLaser {
+      0% { top: 10%; opacity: 0; }
+      15% { opacity: 0.9; }
+      85% { opacity: 0.9; }
+      100% { top: 90%; opacity: 0; }
+    }
+
+    .hud-target-oval {
+      width: 210px;
+      height: 260px;
+      border: 1.5px dashed rgba(217, 119, 6, 0.6);
+      border-radius: 50%;
+      position: absolute;
+      transition: all 0.3s;
+    }
+
+    .hud-target-oval.matched {
+      border-color: var(--accent-green);
+      border-style: solid;
+      border-width: 3px;
+      box-shadow: 0 0 24px rgba(16, 185, 129, 0.6);
+    }
+
+    .hud-target-oval.rejected {
+      border-color: var(--accent-red);
+      border-style: solid;
+      border-width: 3px;
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.6);
+    }
+
+    .scanner-metrics-panel {
+      width: 100%;
+      max-width: 520px;
+      margin-top: 14px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .meter-track {
+      width: 100%;
+      height: 8px;
+      background: #E2E8F0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .meter-progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--bnb-gold), var(--accent-green));
+      border-radius: 4px;
+      transition: width 0.2s;
+    }
+
+    .train-feature-strip {
+      width: 100%;
+      max-width: 520px;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .controls-btn-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+      max-width: 520px;
+      margin-top: 12px;
+    }
+
+    .sim-photo-bar {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      max-width: 520px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .sim-photo-select {
+      flex: 1;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .proceed-btn-wrap {
+      width: 100%;
+      max-width: 520px;
+      margin-top: 14px;
+      display: none;
+    }
+
+    /* ========================================================
+       BNB CLIENT NETBANKING DASHBOARD VIEW
+       ======================================================== */
+    .portal-banner {
+      background: linear-gradient(135deg, var(--bnb-crimson), var(--bnb-crimson-dark));
+      border-radius: 14px;
+      padding: 24px 28px;
+      color: #FFFFFF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 16px rgba(128, 0, 32, 0.2);
+    }
+
+    .user-profile-group {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .user-profile-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 3px solid var(--bnb-gold);
+      object-fit: cover;
+    }
+
+    .user-profile-info h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+
+    .user-profile-info p {
+      font-size: 12px;
+      color: #F8FAFC;
+      opacity: 0.9;
+    }
+
+    .portal-badge-tags {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .badge-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+    }
+
+    .badge-pill.gold {
+      background: var(--bnb-gold);
+      color: #4A000F;
+    }
+
+    /* Accounts Summary Cards */
+    .accounts-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .accounts-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
-      .navbar nav a {
-        color: white;
-        text-decoration: none;
-        font-size: 14px;
+    }
+
+    @media (max-width: 640px) {
+      .accounts-summary-grid {
+        grid-template-columns: 1fr;
       }
-      .login-container {
-        position: relative;
-        width: 100%;
-        min-height: 80vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: url("backgroundImages/Screenshot%202025-01-29%20004049.png")
-          no-repeat center center/cover;
+    }
+
+    .account-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      border-top: 4px solid var(--bnb-crimson);
+    }
+
+    .card-acc-type {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .card-acc-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .card-acc-bal {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--bnb-crimson);
+      font-family: var(--font-mono);
+    }
+
+    /* Dual Column Layout */
+    .portal-columns-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .portal-columns-wrap {
+        grid-template-columns: 1fr;
       }
-      .login-box {
-        background-color: white;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        width: 350px;
-        position: relative;
-        z-index: 1;
+    }
+
+    /* RuPay Platinum Card */
+    .rupay-platinum-card {
+      width: 100%;
+      height: 210px;
+      background: linear-gradient(135deg, #800020, #4A000F);
+      border-radius: 16px;
+      padding: 22px;
+      color: #FFFFFF;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 10px 24px rgba(128, 0, 32, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      margin-bottom: 16px;
+    }
+
+    .card-head-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-emv-chip {
+      width: 40px;
+      height: 30px;
+      background: linear-gradient(135deg, #F59E0B, #FBBF24);
+      border-radius: 6px;
+      border: 1px solid #D97706;
+    }
+
+    .card-pan-row {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      letter-spacing: 3px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-foot-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .card-actions-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    /* Transfer Money Card */
+    .service-action-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+      margin-bottom: 24px;
+    }
+
+    .service-head-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--bnb-crimson);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Statement Ledger */
+    .ledger-container {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .tx-entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #F1F5F9;
+    }
+
+    .tx-info h5 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .tx-info p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .tx-amt-display {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .tx-amt-display.cr { color: var(--accent-green); }
+    .tx-amt-display.dr { color: var(--accent-red); }
+
+    /* ========================================================
+       DIAGNOSTICS & SYSTEM DASHBOARD
+       ======================================================== */
+    .diagnostics-container {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .diag-subsystem-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .diag-subsystem-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
-      .login-box input {
-        width: 100%;
-        padding: 10px;
-        margin: 8px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+    }
+
+    .diag-subsystem-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .diag-subsystem-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--bnb-crimson);
+      margin-bottom: 8px;
+    }
+
+    .diag-subsystem-card p {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .diag-results-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 14px;
+    }
+
+    .diag-results-table th {
+      text-align: left;
+      padding: 10px 14px;
+      background: #F1F5F9;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .diag-results-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #F1F5F9;
+    }
+
+    /* ========================================================
+       DARK MODE THEME
+       ======================================================== */
+    body.dark-mode {
+      --bg-body: #070B14;
+      --bg-card: #0F172A;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border-color: #1E293B;
+      --shadow-card: 0 4px 25px rgba(0, 0, 0, 0.4);
+      --shadow-header: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    body.dark-mode .bnb-header {
+      background: #0C1222;
+      border-bottom-color: #1E293B;
+    }
+    body.dark-mode .bnb-nav-tabs {
+      background: #070B14;
+      border-color: #1E293B;
+    }
+    body.dark-mode .bnb-nav-btn {
+      color: #94A3B8;
+    }
+    body.dark-mode .bnb-nav-btn:hover {
+      background: #1E293B;
+      color: #F8FAFC;
+    }
+    body.dark-mode .info-card,
+    body.dark-mode .auth-panel,
+    body.dark-mode .account-card,
+    body.dark-mode .service-action-box,
+    body.dark-mode .ledger-container,
+    body.dark-mode .diagnostics-container,
+    body.dark-mode .diag-subsystem-card,
+    body.dark-mode .calc-box {
+      background: #0F172A;
+      border-color: #1E293B;
+      color: #F8FAFC;
+    }
+    body.dark-mode .text-input,
+    body.dark-mode .sim-photo-select {
+      background: #070B14;
+      border-color: #1E293B;
+      color: #F8FAFC;
+    }
+    body.dark-mode .btn-secondary-action {
+      background: #1A243B;
+      border-color: #334155;
+      color: #E2E8F0;
+    }
+    body.dark-mode .factor-step-item,
+    body.dark-mode .profile-card,
+    body.dark-mode .pattern-stage,
+    body.dark-mode .scanner-metrics-panel,
+    body.dark-mode .train-feature-strip,
+    body.dark-mode .pattern-hint-banner {
+      background: #070B14;
+      border-color: #1E293B;
+      color: #F8FAFC;
+    }
+    body.dark-mode .diag-results-table th {
+      background: #070B14;
+      color: #94A3B8;
+    }
+    body.dark-mode .diag-results-table td {
+      border-bottom-color: #1E293B;
+    }
+    body.dark-mode .tx-entry {
+      border-bottom-color: #1E293B;
+    }
+    body.dark-mode .tx-entry:hover {
+      background: #070B14;
+      cursor: pointer;
+    }
+    .tx-entry {
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .tx-entry:hover {
+      background: #F8FAFC;
+    }
+
+    /* ========================================================
+       ATHER CONNECTED EV TELEMATICS CARD
+       ======================================================== */
+    .ev-telematics-card {
+      background: linear-gradient(135deg, #09131F 0%, #0F2027 50%, #17323A 100%);
+      border: 1.5px solid rgba(0, 210, 144, 0.4);
+      border-radius: 16px;
+      padding: 24px 28px;
+      color: #FFFFFF;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 30px rgba(0, 210, 144, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+    .ev-telematics-card::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 160px;
+      height: 160px;
+      background: radial-gradient(circle, rgba(0, 210, 144, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .ev-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .ev-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 210, 144, 0.15);
+      color: #00D290;
+      border: 1px solid rgba(0, 210, 144, 0.4);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .ev-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      margin: 18px 0;
+    }
+    .ev-stat-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .ev-stat-label {
+      font-size: 11px;
+      color: #94A3B8;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .ev-stat-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: #00D290;
+      font-family: var(--font-mono);
+    }
+    .ev-ride-modes {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .ride-mode-pill {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      color: #CBD5E1;
+      transition: all 0.2s;
+    }
+    .ride-mode-pill:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+    }
+    .ride-mode-pill.active {
+      background: #00D290;
+      color: #09131F;
+      border-color: #00D290;
+      box-shadow: 0 0 12px rgba(0, 210, 144, 0.5);
+    }
+    .ev-controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .ev-toggle-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .ev-toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .ev-toggle-btn.danger {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #FCA5A5;
+    }
+
+    /* ========================================================
+       FD & EV LOAN EMI CALCULATOR
+       ======================================================== */
+    .calc-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 24px;
+      margin-top: 24px;
+      box-shadow: var(--shadow-card);
+    }
+    .calc-slider-row {
+      margin-bottom: 16px;
+    }
+    .calc-slider-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .calc-slider-input {
+      width: 100%;
+      accent-color: var(--bnb-crimson);
+      height: 6px;
+      cursor: pointer;
+    }
+    .calc-result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 16px;
+      text-align: center;
+    }
+    body.dark-mode .calc-result-grid {
+      background: #070B14;
+    }
+    .calc-result-item h6 {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .calc-result-item span {
+      font-size: 17px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: var(--bnb-crimson);
+    }
+
+    /* ========================================================
+       MODAL POPUPS & PRINT SHEETS
+       ======================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.2s ease;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      max-width: 620px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      padding: 28px;
+      position: relative;
+    }
+    .modal-card.wide {
+      max-width: 860px;
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #F1F5F9;
+      border: 1px solid var(--border-color);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    body.dark-mode .modal-close-btn {
+      background: #1E293B;
+      color: #E2E8F0;
+    }
+    .modal-close-btn:hover {
+      background: var(--bnb-crimson);
+      color: #FFFFFF;
+    }
+    .statement-sheet {
+      background: #FFFFFF;
+      color: #0F172A;
+      padding: 28px;
+      border-radius: 12px;
+      border: 2px solid #E2E8F0;
+      font-family: var(--font-sans);
+    }
+    .statement-head {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--bnb-crimson);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .statement-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin: 16px 0;
+    }
+    .statement-table th, .statement-table td {
+      border: 1px solid #E2E8F0;
+      padding: 8px 10px;
+      text-align: left;
+    }
+    .statement-table th {
+      background: #F8FAFC;
+      font-weight: 700;
+    }
+    .statement-seal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 2px dashed #059669;
+      padding: 6px 12px;
+      border-radius: 8px;
+      color: #065F46;
+      font-weight: 700;
+      font-size: 11px;
+    }
+    .spec-section {
+      margin-bottom: 22px;
+    }
+    .spec-section h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--bnb-crimson);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .spec-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 640px) {
+      .spec-grid-2 {
+        grid-template-columns: 1fr;
       }
-      .login-box button {
-        width: 100%;
-        padding: 10px;
-        background-color: #004d40;
-        color: white;
-        border: none;
-        cursor: pointer;
-        font-size: 16px;
-      }
-      .login-box button:hover {
-        background-color: #00332e;
-      }
-      .login-links {
-        margin-top: 15px;
-        font-size: 14px;
-      }
-      .login-links a {
-        color: #004d40;
-        text-decoration: none;
-        font-weight: bold;
-      }
-      .login-links a:hover {
-        text-decoration: underline;
-      }
-      footer {
-        background-color: #004d40;
-        color: white;
-        text-align: center;
-        padding: 20px;
-      }
-      .footer-links {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        flex-wrap: wrap;
-        margin-top: 10px;
-      }
-      .footer-links a {
-        color: white;
-        text-decoration: none;
-        font-size: 14px;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="navbar">
-        <h1>Bank</h1>
-        <nav>
-          <ul>
-            <li><a href="#">My Accounts</a></li>
-            <li><a href="#">How To</a></li>
-            <li><a href="#">Products</a></li>
-            <li><a href="#">Solutions</a></li>
-          </ul>
-        </nav>
+    }
+    .spec-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 14px;
+    }
+    body.dark-mode .spec-card {
+      background: #070B14;
+    }
+
+    /* Footer */
+    footer {
+      background: #0F172A;
+      color: #94A3B8;
+      font-size: 12px;
+      padding: 20px 24px;
+      margin-top: auto;
+      border-top: 3px solid var(--bnb-gold);
+    }
+
+    .footer-inner {
+      max-width: 1380px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-links-list {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-links-list a {
+      color: #CBD5E1;
+      text-decoration: none;
+    }
+
+    .footer-links-list a:hover {
+      color: var(--bnb-gold);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Government Ribbon -->
+  <div class="top-ribbon">
+    <div class="ribbon-badges">
+      <div class="govt-badge">
+        <span class="pulse-dot"></span>
+        <span>AURA QUANTUM CORE BANKING • ATHER SMART MOBILITY 3FA GATEWAY</span>
       </div>
-    </header>
-
-    <main>
-      <div class="login-container">
-        <div class="login-box">
-          <h2>Login</h2>
-          <form id="login-form">
-            <label for="user-id">Username</label>
-            <input
-              type="text"
-              id="user-id"
-              placeholder="Enter your username"
-              required
-            />
-            <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter your password"
-              required
-            />
-            <div id="pattern-container">
-              <h3 style="font-size: medium; color: darkgreen">
-                Enter Your Pattern
-              </h3>
-              <input
-                style="width: 20.5rem; margin-bottom: 2rem"
-                type="password"
-                id="pattern-input"
-                placeholder="Enter your unique pattern"
-                required
-              />
-            </div>
-            <button type="submit">Login</button>
-            <div class="login-links">
-              <a href="#">Forgot your username or password?</a> |
-              <a href="#">Register</a>
-            </div>
-          </form>
-          <div id="status"></div>
-        </div>
-      </div>
-    </main>
-
-    <footer>
-      <p>Need to talk to us directly? <a href="#">Contact us</a></p>
-      <div class="footer-links">
-        <a href="#">Privacy and Security</a>
-        <a href="#">Legal</a>
-        <a href="#">Accessibility</a>
-        <a href="#">About us</a>
-        <a href="#">We're Hiring</a>
-        <a href="#">Site Index</a>
-      </div>
-    </footer>
-  </body>
-  <div id="app-container">
-    <div id="video-container">
-      <h3>Face Verification</h3>
-      <video id="video" width="720" height="560" autoplay muted></video>
-      <div id="video-status">Initializing face recognition...</div>
+      <span>|</span>
+      <span>National Toll-Free: 1800 11 2211 / 1800 425 3800</span>
+      <span>|</span>
+      <span>DICGC Deposit Insured up to ₹5,00,000</span>
+      <span>|</span>
+      <span style="color: #00D290; font-weight: 700;">Ather Stack 6.0 Connected</span>
+    </div>
+    <div id="live-clock">
+      <span>22-OCT-2026 12:40:00 IST</span>
     </div>
   </div>
+
+  <!-- Header -->
+  <header class="bnb-header">
+    <div class="bnb-header-inner">
+      <div class="bnb-brand" id="nav-brand-home">
+        <div class="bnb-logo-emblem">भा</div>
+        <div class="bnb-titles">
+          <h1>भारत नैशनल बैंक <span>BNB</span></h1>
+          <p>विश्वास और सुरक्षा का प्रतीक • 3FA Quantum NetBanking & Smart Mobility</p>
+        </div>
+      </div>
+
+      <!-- Nav Tabs -->
+      <div class="bnb-nav-tabs">
+        <button class="bnb-nav-btn active" id="tab-auth-btn">
+          <span>🔒 Security Gateway</span>
+        </button>
+        <button class="bnb-nav-btn" id="tab-banking-btn">
+          <span>🏦 Client NetBanking & EV</span>
+        </button>
+        <button class="bnb-nav-btn" id="tab-diagnostics-btn">
+          <span>📊 System Diagnostics</span>
+        </button>
+      </div>
+
+      <div class="session-badge-box">
+        <button type="button" class="btn-secondary-action" id="btn-open-portfolio-spec" style="border-color: #00D290; color: #00D290; font-weight: 700; background: rgba(0, 210, 144, 0.1);">
+          🎨 Ather AI Spec
+        </button>
+        <button type="button" class="btn-secondary-action" id="btn-demo-login-nav" style="border-color: #059669; color: #059669; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 6px 12px; font-size: 11px;">
+          ⚡ Demo Access
+        </button>
+        <button type="button" class="btn-secondary-action" id="btn-toggle-theme" style="padding: 6px 10px; font-size: 11px;">
+          🌙 Dark
+        </button>
+        <div class="bnb-session-pill" id="session-status-pill">
+          <span>● Gateway Locked</span>
+        </div>
+        <button class="btn-bnb-logout" id="btn-logout">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========================================================
+         VIEW 1: SECURITY GATEWAY (3FA PIPELINE)
+         ======================================================== -->
+    <section class="view-section active" id="view-auth">
+      <div class="gateway-grid">
+        <!-- Left Side: Profile Selector & Info -->
+        <div class="info-card">
+          <div class="info-tag">Retail NetBanking • 3FA Secured</div>
+          <h2>BNB Quantum Biometric Gateway</h2>
+          <p>
+            Welcome to Bharat National Bank NetBanking. Account access is safeguarded by 3 cryptographic factors: <strong>Credentials</strong>, <strong>Tactile Pattern Lock</strong>, and <strong>Facial Biometric Recognition</strong>.
+          </p>
+
+          <div class="factor-steps-list">
+            <div class="factor-step-item">
+              <div class="factor-num">1</div>
+              <div class="factor-text">
+                <h4>User ID & Passphrase</h4>
+                <p>Argon2 verified against BNB core banking ledger</p>
+              </div>
+            </div>
+            <div class="factor-step-item">
+              <div class="factor-num">2</div>
+              <div class="factor-text">
+                <h4>3x3 Tactile Pattern Lock</h4>
+                <p>Permutation matrix gesture authentication</p>
+              </div>
+            </div>
+            <div class="factor-step-item">
+              <div class="factor-num">3</div>
+              <div class="factor-text">
+                <h4>Multi-User Face Biometrics</h4>
+                <p>128-dimensional tensor matching with strict cross-user rejection</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accounts Selection Box -->
+          <div class="profiles-box">
+            <div class="profiles-title">
+              <span>👤 Select Account Profile for Verification:</span>
+            </div>
+            <div class="profile-cards-grid">
+              <div class="profile-card selected" data-user="Person1">
+                <img src="/assets/known_faces/Person1_1.jpg" class="profile-photo" alt="Rituraj Kumar">
+                <div class="profile-meta">
+                  <h5>Rituraj Kumar</h5>
+                  <span>Person 1 • Delhi Branch</span>
+                </div>
+              </div>
+              <div class="profile-card" data-user="Person2">
+                <img src="/assets/known_faces/Person2_1.jpg" class="profile-photo" alt="Rishikesh Verma">
+                <div class="profile-meta">
+                  <h5>Rishikesh Verma</h5>
+                  <span>Person 2 • Mumbai Branch</span>
+                </div>
+              </div>
+              <div class="profile-card" data-user="Person3">
+                <img src="/assets/known_faces/Person3_1.jpg" class="profile-photo" alt="Ankur Sharma">
+                <div class="profile-meta">
+                  <h5>Ankur Sharma</h5>
+                  <span>Person 3 • Chandigarh North Branch</span>
+                </div>
+              </div>
+              <div class="profile-card" data-user="Person4">
+                <img src="/assets/known_faces/Person4_1.jpg" class="profile-photo" alt="Smita Patel">
+                <div class="profile-meta">
+                  <h5>Smita Patel</h5>
+                  <span>Person 4 • Gujarat Branch</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Multi-Step Auth Wizard -->
+        <div class="auth-panel">
+          <div class="stepper-header">
+            <div class="step-node active" id="wizard-step-1">
+              <div class="step-circle">1</div>
+              <span class="step-label">Credentials</span>
+            </div>
+            <div class="step-node" id="wizard-step-2">
+              <div class="step-circle">2</div>
+              <span class="step-label">Pattern Lock</span>
+            </div>
+            <div class="step-node" id="wizard-step-3">
+              <div class="step-circle">3</div>
+              <span class="step-label">Face Biometrics</span>
+            </div>
+          </div>
+
+          <!-- STEP 1: CREDENTIALS -->
+          <div class="step-view active" id="step-1-credentials">
+            <div class="form-header-box">
+              <h3>Retail Internet Banking Login</h3>
+              <p>Enter your User ID and password to proceed.</p>
+            </div>
+
+            <form id="login-form">
+              <div class="input-row">
+                <label for="user-id">User ID / Customer Number</label>
+                <div class="input-field-wrap">
+                  <input type="text" id="user-id" class="text-input" value="Person1" placeholder="Enter User ID" required />
+                </div>
+              </div>
+
+              <div class="input-row">
+                <label for="password">Password</label>
+                <div class="input-field-wrap">
+                  <input type="password" id="password" class="text-input" value="password123" placeholder="Enter Password" required />
+                  <button type="button" class="eye-toggle" id="toggle-password-btn">👁️</button>
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 13px;">
+                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                  <input type="checkbox" checked style="accent-color: var(--bnb-crimson);"> Remember User ID
+                </label>
+                <a href="javascript:void(0)" id="link-forgot-pw" style="color: var(--bnb-crimson); font-weight: 600; text-decoration: none;">Forgot Password?</a>
+              </div>
+
+              <button type="submit" class="btn-primary-action" id="btn-submit-credentials">
+                <span>Continue to Factor 2 (Pattern Lock) →</span>
+              </button>
+            </form>
+
+            <div class="status-msg-box" id="status-step-1"></div>
+
+            <!-- PORTFOLIO EVALUATOR & 1-CLICK DEMO LOGIN -->
+            <div class="demo-evaluator-card" style="margin-top: 20px; padding: 14px 16px; border: 1.5px dashed #059669; background: #ECFDF5; border-radius: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-weight: 800; font-size: 12px; color: #065F46;">⚡ REVIEWER & DEMO ACCESS (1-CLICK)</span>
+                <span style="font-size: 10px; font-weight: 700; color: #047857; background: #D1FAE5; padding: 2px 7px; border-radius: 10px;">Zero Biometrics Required</span>
+              </div>
+              <p style="font-size: 11px; color: #374151; margin: 0 0 10px 0; line-height: 1.4;">
+                Evaluating remotely without camera or facial training? 1-click bypass straight into full Client NetBanking as any enrolled profile:
+              </p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <button type="button" class="btn-demo-account-login" data-demo-user="Person1" style="padding: 8px 10px; font-size: 11px; font-weight: 700; background: #065F46; color: #FFFFFF; border: none; border-radius: 6px; cursor: pointer; text-align: left; transition: opacity 0.2s;">
+                  👤 Rituraj (Person 1) →
+                </button>
+                <button type="button" class="btn-demo-account-login" data-demo-user="Person2" style="padding: 8px 10px; font-size: 11px; font-weight: 700; background: #047857; color: #FFFFFF; border: none; border-radius: 6px; cursor: pointer; text-align: left; transition: opacity 0.2s;">
+                  👤 Rishikesh (Person 2) →
+                </button>
+                <button type="button" class="btn-demo-account-login" data-demo-user="Person3" style="padding: 8px 10px; font-size: 11px; font-weight: 700; background: #047857; color: #FFFFFF; border: none; border-radius: 6px; cursor: pointer; text-align: left; transition: opacity 0.2s;">
+                  👤 Ankur (Person 3) →
+                </button>
+                <button type="button" class="btn-demo-account-login" data-demo-user="Person4" style="padding: 8px 10px; font-size: 11px; font-weight: 700; background: #047857; color: #FFFFFF; border: none; border-radius: 6px; cursor: pointer; text-align: left; transition: opacity 0.2s;">
+                  👤 Smita (Person 4) →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP 2: PATTERN VERIFICATION -->
+          <div class="step-view" id="step-2-pattern">
+            <div class="step-nav-bar">
+              <button type="button" class="btn-step-prev" id="btn-back-to-step1">
+                ← Back to Credentials
+              </button>
+              <span style="font-size: 11px; font-weight: 700; color: var(--bnb-crimson); text-transform: uppercase;">Factor 2 of 3</span>
+            </div>
+
+            <div class="form-header-box">
+              <h3>BNB Tactile Pattern Lock</h3>
+              <p>Draw your security gesture on the 3x3 matrix to verify factor 2.</p>
+            </div>
+
+            <div class="pattern-lock-container">
+              <div class="pattern-stage">
+                <div class="pattern-nodes-grid">
+                  <div class="pattern-slot"><div class="node-dot" data-node="1"></div></div>
+                  <div class="pattern-slot"><div class="node-dot" data-node="2"></div></div>
+                  <div class="pattern-slot"><div class="node-dot" data-node="3"></div></div>
+                  <div class="pattern-slot"><div class="node-dot" data-node="4"></div></div>
+                  <div class="pattern-slot"><div class="node-dot" data-node="5"></div></div>
+                  <div class="pattern-slot"><div class="node-dot" data-node="6"></div></div>
+                  <div class="pattern-slot"><div class="node-dot" data-node="7"></div></div>
+                  <div class="pattern-slot"><div class="node-dot" data-node="8"></div></div>
+                  <div class="pattern-slot"><div class="node-dot" data-node="9"></div></div>
+                </div>
+                <canvas id="pattern-canvas" width="280" height="280"></canvas>
+              </div>
+
+              <div class="pattern-track-label">
+                <span>Drawn Sequence:</span>
+                <strong id="pattern-sequence-preview" style="color: var(--bnb-crimson);">None (Drag or Click)</strong>
+              </div>
+
+              <div class="pattern-hint-banner">
+                <span id="pattern-hint-text">💡 Hint: Person 1 Pattern is 1 → 2 → 3 → 6 → 9</span>
+                <button type="button" class="btn-secondary-action" id="btn-auto-draw" style="padding: 3px 8px; font-size: 11px;">Auto-Draw</button>
+              </div>
+
+              <div class="pattern-btn-row">
+                <button type="button" class="btn-secondary-action" id="btn-clear-pattern" style="flex: 1;">
+                  ↺ Reset
+                </button>
+                <button type="button" class="btn-primary-action" id="btn-submit-pattern" style="flex: 2;">
+                  <span>Verify Pattern →</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="status-msg-box" id="status-step-2"></div>
+          </div>
+
+          <!-- STEP 3: FACE BIOMETRIC VERIFICATION -->
+          <div class="step-view" id="step-3-face">
+            <div class="step-nav-bar">
+              <button type="button" class="btn-step-prev" id="btn-back-to-step2">
+                ← Back to Pattern Lock
+              </button>
+              <span style="font-size: 11px; font-weight: 700; color: var(--bnb-crimson); text-transform: uppercase;">Factor 3 of 3</span>
+            </div>
+
+            <div class="form-header-box">
+              <h3>BNB Neural Face Biometrics</h3>
+              <p>Look into the camera. The AI model compares your live face against the enrolled biometric profile and <strong>strictly rejects mismatches</strong>.</p>
+            </div>
+
+            <div class="face-scanner-wrap">
+              <!-- Viewport -->
+              <div class="camera-hud-box">
+                <video id="video" width="640" height="480" autoplay playsinline muted></video>
+                <canvas id="face-canvas" width="640" height="480"></canvas>
+
+                <div class="hud-target-reticle">
+                  <div class="hud-corner-bracket c-tl"></div>
+                  <div class="hud-corner-bracket c-tr"></div>
+                  <div class="hud-corner-bracket c-bl"></div>
+                  <div class="hud-corner-bracket c-br"></div>
+                  <div class="hud-scan-sweep"></div>
+                  <div class="hud-target-oval" id="hud-target-oval"></div>
+                </div>
+              </div>
+
+              <!-- Metrics -->
+              <div class="scanner-metrics-panel">
+                <div class="metric-row">
+                  <span>Camera & Hardware:</span>
+                  <strong id="camera-status-text" style="color: var(--bnb-crimson);">Ready. Click "Turn On Camera" below</strong>
+                </div>
+                <div class="metric-row">
+                  <span>Target Verification:</span>
+                  <strong id="face-target-name" style="color: var(--bnb-crimson);">Verifying for Rituraj Kumar</strong>
+                </div>
+                <div class="metric-row">
+                  <span>Biometric Comparison:</span>
+                  <strong id="face-match-result">Awaiting face alignment...</strong>
+                </div>
+                <div class="metric-row">
+                  <span>Match Confidence:</span>
+                  <strong id="face-confidence-score">0% (Threshold: 55%)</strong>
+                </div>
+                <div class="meter-track">
+                  <div class="meter-progress" id="confidence-bar-fill"></div>
+                </div>
+              </div>
+
+              <!-- Train My Face Option -->
+              <div class="train-feature-strip">
+                <div>
+                  <h5 style="font-size: 12px; font-weight: 700; color: #92400E;">📸 Enroll / Train Your Real Face</h5>
+                  <p style="font-size: 11px; color: #B45309; margin: 0;">Registers your live webcam face into this specific account!</p>
+                </div>
+                <button type="button" class="btn-primary-action" id="btn-enroll-my-face" style="width: auto; padding: 6px 14px; font-size: 12px; background: #92400E;">
+                  Enroll My Face
+                </button>
+              </div>
+
+              <!-- Action Controls -->
+              <div class="controls-btn-bar">
+                <button type="button" class="btn-secondary-action" id="btn-start-camera" style="flex: 1; border-color: var(--bnb-crimson); color: var(--bnb-crimson); font-weight: 700;">
+                  📹 Turn On Camera
+                </button>
+                <button type="button" class="btn-secondary-action" id="btn-scan-face-now" style="flex: 1;">
+                  🔍 Scan & Match Face
+                </button>
+                <button type="button" class="btn-secondary-action" id="btn-toggle-landmarks" style="flex: 1;">
+                  🕸️ Mesh: ON
+                </button>
+              </div>
+
+              <!-- Simulator Dropdown to Prove Rejection -->
+              <div class="sim-photo-bar">
+                <select class="sim-photo-select" id="test-face-select">
+                  <option value="">-- Test Database Image (Demonstrates Cross-User Rejection) --</option>
+                  <option value="/assets/known_faces/Person1_1.jpg">Person 1 (Rituraj) Photo 1 [Matches Person 1 Only]</option>
+                  <option value="/assets/known_faces/Person1_2.jpg">Person 1 (Rituraj) Photo 2 [Matches Person 1 Only]</option>
+                  <option value="/assets/known_faces/Person2_1.jpg">Person 2 (Rishikesh) Photo 1 [Matches Person 2 Only]</option>
+                  <option value="/assets/known_faces/Person3_1.jpg">Person 3 (Ankur) Photo 1 [Matches Person 3 Only]</option>
+                  <option value="/assets/known_faces/Person4_1.jpg">Person 4 (Smita) Photo 1 [Matches Person 4 Only]</option>
+                </select>
+                <button type="button" class="btn-secondary-action" id="btn-test-photo-verify" style="white-space: nowrap;">
+                  Test Image
+                </button>
+              </div>
+
+              <!-- Instant Demo Bypass for Reviewers without Camera/Enrolled Face -->
+              <div style="margin-top: 14px; text-align: center; padding: 12px; background: rgba(16, 185, 129, 0.08); border-radius: 8px; border: 1.5px dashed #059669;">
+                <div style="font-size: 11px; color: #065F46; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Camera Blocked / Remote Evaluation Mode</div>
+                <p style="font-size: 11px; color: #374151; margin: 0 0 8px 0;">Evaluating remotely without camera permissions? Bypass Factor 3 instantly:</p>
+                <button type="button" class="btn-primary-action" id="btn-skip-face-demo" style="background: #059669; color: #FFFFFF; font-weight: 700; padding: 9px 14px; font-size: 12px; border-radius: 6px; width: 100%;">
+                  ⚡ Skip Face ID & Enter Client NetBanking Portal →
+                </button>
+              </div>
+
+              <!-- Proceed to Dashboard Action (REVEALED ONLY ON SUCCESSFUL MATCH) -->
+              <div class="proceed-btn-wrap" id="proceed-button-wrap">
+                <button type="button" class="btn-primary-action" id="btn-proceed-to-dashboard" style="background: #065F46; padding: 14px; font-size: 15px;">
+                  <span>✓ Face Verified — Enter Client NetBanking Portal →</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="status-msg-box" id="status-step-3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 2: CLIENT NETBANKING PORTAL (LOCKED UNTIL 3FA)
+         ======================================================== -->
+    <section class="view-section" id="view-banking">
+      <!-- Welcome Banner -->
+      <div class="portal-banner">
+        <div class="user-profile-group">
+          <img src="/assets/known_faces/Person1_1.jpg" id="portal-user-avatar" class="user-profile-avatar" alt="User Avatar">
+          <div class="user-profile-info">
+            <h2 id="portal-user-name">Rituraj Kumar</h2>
+            <p>Customer ID: <strong id="portal-user-cif" style="color: var(--bnb-gold);">8801000100293841</strong> • Branch: 0108 New Delhi Parliament Street (IFSC: BNBN0108900)</p>
+            <div class="portal-badge-tags">
+              <span class="badge-pill gold">BNB Platinum Retail</span>
+              <span class="badge-pill">3FA Quantum Biometrics Active</span>
+              <span class="badge-pill">KYC Complied</span>
+              <span class="badge-pill" style="border-color: #00D290; color: #00D290; background: rgba(0, 210, 144, 0.1);">⚡ Ather 450X Linked</span>
+            </div>
+            <div style="margin-top: 8px; display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 0, 0, 0.25); padding: 5px 12px; border-radius: 6px; font-size: 11px;">
+              <span style="color: #F8FAFC; font-weight: 700;">⚡ Switch Demo Profile:</span>
+              <select id="portal-account-switcher" style="padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.4); background: #0F172A; color: #FFFFFF; font-size: 11px; font-weight: 700; cursor: pointer;">
+                <option value="Person1">Person 1: Rituraj Kumar (₹4,82,500)</option>
+                <option value="Person2">Person 2: Rishikesh Verma (₹3,15,400)</option>
+                <option value="Person3">Person 3: Ankur Sharma (₹6,40,900)</option>
+                <option value="Person4">Person 4: Smita Patel (₹2,75,000)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 11px; opacity: 0.85; margin-bottom: 4px;">Last Login: Today at 23:50 IST</div>
+          <button class="btn-secondary-action" id="btn-quick-statement" style="background: rgba(255, 255, 255, 0.15); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.3);">
+            📥 Download Statement
+          </button>
+        </div>
+      </div>
+
+      <!-- Ather Connected EV & Smart Mobility Digital Key Hub -->
+      <div class="ev-telematics-card">
+        <div class="ev-header-row">
+          <div>
+            <span class="ev-badge-pill">⚡ ATHER STACK 6.0 CONNECTED</span>
+            <h3 style="font-size: 20px; font-weight: 800; color: #FFFFFF; margin: 4px 0 2px 0;">Ather 450X (Apex Limited Edition)</h3>
+            <p style="font-size: 12px; color: #94A3B8; margin: 0;">Reg: <strong>DL 01 EV 2026</strong> • Paired Smart Key ID: <strong>ATH-9908-BIO</strong></p>
+          </div>
+          <div style="text-align: right;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(0, 210, 144, 0.1); border: 1px solid rgba(0, 210, 144, 0.3); padding: 6px 14px; border-radius: 20px;">
+              <span class="pulse-dot" style="background: #00D290; box-shadow: 0 0 6px #00D290;"></span>
+              <span style="font-size: 11px; font-weight: 700; color: #00D290;" id="ev-digital-key-status">Biometric Digital Key: ACTIVE</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ev-stats-grid">
+          <div class="ev-stat-box">
+            <div class="ev-stat-label">Battery State of Charge</div>
+            <div class="ev-stat-val" id="ev-battery-val">88%</div>
+            <div style="font-size: 10px; color: #00D290; margin-top: 2px;">⚡ Ather Grid Fast Charging</div>
+          </div>
+
+          <div class="ev-stat-box">
+            <div class="ev-stat-label">Estimated Range</div>
+            <div class="ev-stat-val" id="ev-range-val">112 KM</div>
+            <div style="font-size: 10px; color: #94A3B8; margin-top: 2px;" id="ev-range-mode-label">Mode: Ride (70 km/h)</div>
+          </div>
+
+          <div class="ev-stat-box">
+            <div class="ev-stat-label">Fast Charge Station</div>
+            <div style="font-size: 14px; font-weight: 700; color: #F8FAFC; margin-top: 4px;">Connaught Place Grid #4</div>
+            <div style="font-size: 10px; color: #94A3B8; margin-top: 2px;">AutoPay Wallet Linked</div>
+          </div>
+
+          <div class="ev-stat-box">
+            <div class="ev-stat-label">Vehicle Health & Telematics</div>
+            <div style="font-size: 14px; font-weight: 700; color: #10B981; margin-top: 4px;">100% Optimal</div>
+            <div style="font-size: 10px; color: #94A3B8; margin-top: 2px;">Firmware: v6.1.4 Apex</div>
+          </div>
+        </div>
+
+        <div style="font-size: 12px; font-weight: 700; color: #E2E8F0; margin-bottom: 4px;">Interactive Ride Mode Selector (HMI Dynamic Telemetry):</div>
+        <div class="ev-ride-modes">
+          <button type="button" class="ride-mode-pill" data-mode="eco">🌿 Eco (145 km)</button>
+          <button type="button" class="ride-mode-pill active" data-mode="ride">⚡ Ride (112 km)</button>
+          <button type="button" class="ride-mode-pill" data-mode="sport">🔥 Sport (95 km)</button>
+          <button type="button" class="ride-mode-pill" data-mode="warp">🚀 Warp+ (75 km)</button>
+        </div>
+
+        <div class="ev-controls-row">
+          <div class="ev-switch-group">
+            <button type="button" class="ev-toggle-btn" id="btn-toggle-ev-lock">
+              <span id="ev-lock-icon">🔓</span> <span id="ev-lock-text">Vehicle Unlocked (Biometric Ignition ON)</span>
+            </button>
+            <button type="button" class="ev-toggle-btn" id="btn-toggle-ev-autopay">
+              ⚡ Ather Grid AutoPay: <strong style="color: #00D290;" id="ev-autopay-status">ENABLED</strong>
+            </button>
+          </div>
+          <div style="font-size: 11px; color: #94A3B8;">
+            Integrated with Bharat National Bank Smart Auto-Debit Protocol
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial KPI Cards -->
+      <div class="accounts-summary-grid">
+        <div class="account-card">
+          <div class="card-acc-type">
+            <span>Savings Bank Account</span>
+            <span style="color: var(--accent-green); font-weight: 700;">Active</span>
+          </div>
+          <div class="card-acc-num" id="portal-acc-num">A/c: 8801000100293841</div>
+          <div class="card-acc-bal" id="portal-acc-balance">₹4,82,500.00</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Available for withdrawal</div>
+        </div>
+
+        <div class="account-card">
+          <div class="card-acc-type">
+            <span>BNB Flexi Fixed Deposit</span>
+            <span style="color: var(--bnb-gold); font-weight: 700;">7.15% p.a.</span>
+          </div>
+          <div class="card-acc-num">FD A/c: 88010009988112</div>
+          <div class="card-acc-bal">₹12,50,000.00</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Maturity: 15-Mar-2028</div>
+        </div>
+
+        <div class="account-card">
+          <div class="card-acc-type">
+            <span>BNB RuPay Select Card</span>
+            <span style="color: var(--bnb-crimson); font-weight: 700;">Credit Limit</span>
+          </div>
+          <div class="card-acc-num">Card: 6071 •••• 9812</div>
+          <div class="card-acc-bal">₹2,00,000.00</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Outstanding: ₹0.00</div>
+        </div>
+
+        <div class="account-card">
+          <div class="card-acc-type">
+            <span>BNB Rewardz Points</span>
+            <span style="color: var(--accent-green); font-weight: 700;">Active</span>
+          </div>
+          <div class="card-acc-num">Reward ID #BNB-9901</div>
+          <div class="card-acc-bal" style="color: var(--bnb-navy);" id="portal-reward-pts">5,420 pts</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 11px; color: var(--text-muted);">Worth ₹1,355.00</span>
+            <button type="button" class="btn-secondary-action" id="btn-redeem-rewards" style="padding: 2px 8px; font-size: 11px;">🎁 Redeem</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Portal Columns -->
+      <div class="portal-columns-wrap">
+        <!-- Left: RuPay Debit Card & Transfer -->
+        <div>
+          <!-- RuPay Platinum Debit Card -->
+          <div class="rupay-platinum-card">
+            <div class="card-head-row">
+              <div class="card-emv-chip"></div>
+              <div style="font-weight: 800; font-size: 16px; letter-spacing: 1px; color: var(--bnb-gold);">BNB RuPay PLATINUM</div>
+            </div>
+
+            <div class="card-pan-row">
+              <span id="bnb-card-masked">6071  ••••  ••••  9812</span>
+              <button type="button" id="btn-toggle-bnb-card" style="background: transparent; border: none; color: var(--bnb-gold); cursor: pointer; font-size: 16px;">👁️</button>
+            </div>
+
+            <div class="card-foot-row">
+              <div>
+                <div style="font-size: 9px; opacity: 0.8; text-transform: uppercase;">Card Holder</div>
+                <div style="font-weight: 700; font-size: 13px;" id="bnb-cardholder-name">RITURAJ KUMAR</div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 9px; opacity: 0.8; text-transform: uppercase;">Valid Thru / CVV</div>
+                <div style="font-family: var(--font-mono); font-weight: 700; font-size: 13px;">08/29 • <span id="bnb-card-cvv">•••</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions-bar">
+            <button class="btn-secondary-action" id="btn-freeze-bnb-card" style="flex: 1;">
+              🔒 Block / Hotlist Card
+            </button>
+            <button class="btn-secondary-action" id="btn-intl-bnb" style="flex: 1;">
+              🌐 Domestic: ON
+            </button>
+            <button class="btn-secondary-action" id="btn-pin-bnb" style="flex: 1;">
+              🔑 Set Green PIN
+            </button>
+          </div>
+
+          <!-- Instant Transfer -->
+          <div class="service-action-box">
+            <div class="service-head-title">
+              <span>💸 Instant Funds Transfer (IMPS / NEFT 24x7)</span>
+            </div>
+
+            <form id="bnb-transfer-form">
+              <div class="input-row">
+                <label>Transfer Mode</label>
+                <select class="text-input" id="bnb-transfer-mode">
+                  <option value="IMPS">IMPS (Immediate Payment - Real Time 24x7)</option>
+                  <option value="NEFT">NEFT (National Electronic Fund Transfer)</option>
+                  <option value="Ather Grid AutoPay">Ather Grid Charging Wallet Top-up</option>
+                  <option value="Within BNB">Within BNB Own / Third Party Account</option>
+                </select>
+              </div>
+
+              <div class="input-row">
+                <label>Beneficiary Account</label>
+                <select class="text-input" id="bnb-recipient-select">
+                  <option value="Rishikesh Verma (BNB A/c: 8801000100448821)">Rishikesh Verma (BNB A/c: 8801000100448821)</option>
+                  <option value="Ankur Sharma (BNB A/c: 8801000100993311)">Ankur Sharma (BNB A/c: 8801000100993311)</option>
+                  <option value="Smita Patel (BNB A/c: 8801000100772244)">Smita Patel (BNB A/c: 8801000100772244)</option>
+                  <option value="Ather Energy Escrow #ATH-9901">Ather Energy Fast-Charging Hub Escrow (#ATH-9901)</option>
+                  <option value="External SBI Escrow #8821992">External Bank (State Bank of India #8821992)</option>
+                </select>
+              </div>
+
+              <div class="input-row">
+                <label>Transfer Amount (INR ₹)</label>
+                <div class="input-field-wrap">
+                  <input type="number" id="bnb-transfer-amount" class="text-input" placeholder="₹ Amount" value="15000" required />
+                </div>
+              </div>
+
+              <div class="input-row">
+                <label>Remarks / Purpose</label>
+                <input type="text" id="bnb-transfer-remarks" class="text-input" value="Ather EV Smart Charging / Utility Bill" />
+              </div>
+
+              <button type="submit" class="btn-primary-action">
+                <span>Authorize & Send Payment →</span>
+              </button>
+            </form>
+
+            <div class="status-msg-box" id="bnb-transfer-status"></div>
+          </div>
+        </div>
+
+        <!-- Right: Mini-Statement -->
+        <div>
+          <div class="ledger-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <div>
+                <h3 style="font-size: 17px; font-weight: 800; color: var(--bnb-crimson);">Account Mini-Statement</h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin: 0;">Click any transaction to view official digital slip</p>
+              </div>
+              <div style="display: flex; gap: 4px;">
+                <button type="button" class="btn-secondary-action tx-filter-btn active" data-filter="all" style="padding: 3px 8px; font-size: 11px;">All</button>
+                <button type="button" class="btn-secondary-action tx-filter-btn" data-filter="credit" style="padding: 3px 8px; font-size: 11px;">Credits</button>
+                <button type="button" class="btn-secondary-action tx-filter-btn" data-filter="debit" style="padding: 3px 8px; font-size: 11px;">Debits</button>
+              </div>
+            </div>
+
+            <!-- Transaction Search Filter -->
+            <div style="margin-bottom: 12px;">
+              <input type="text" id="tx-search-input" placeholder="🔍 Search transactions (description, category, amount, UTR)..." class="text-input" style="font-size: 12px; padding: 8px 12px; width: 100%; border-radius: 6px;" />
+            </div>
+
+            <div id="bnb-transactions-list">
+              <!-- Dynamically Populated -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================
+           BHARAT BILLPAY & INSTANT UTILITY RECHARGE HUB
+           ======================================================== -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 22px 24px; margin-top: 24px; box-shadow: var(--shadow-card);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="background: #2563EB; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px;">BBPS</span>
+              <h3 style="font-size: 17px; font-weight: 800; color: var(--bnb-crimson); margin: 0;">Bharat BillPay & Instant Utility Services</h3>
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); margin: 4px 0 0 0;">Pay verified utility bills instantly with direct 1-click debit from your BNB Savings Account.</p>
+          </div>
+          <span style="font-size: 11px; color: #059669; font-weight: 700; background: #D1FAE5; padding: 3px 8px; border-radius: 6px;">● RBI BBPS Connected</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px;">
+          <!-- Electricity -->
+          <div style="border: 1px solid var(--border-color); background: var(--bg-body); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 20px;">💡</span>
+                <span style="font-size: 10px; font-weight: 700; color: #DC2626; background: #FEE2E2; padding: 2px 6px; border-radius: 4px;">Due in 4 Days</span>
+              </div>
+              <h5 style="font-size: 13px; font-weight: 700; margin: 0 0 2px 0;">Electricity Bill</h5>
+              <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 8px 0;">Tata Power Delhi Distribution (CA: 600192881)</p>
+              <div style="font-size: 16px; font-weight: 800; color: var(--text-main); font-family: var(--font-mono); margin-bottom: 10px;">₹3,840.00</div>
+            </div>
+            <button type="button" class="btn-primary-action btn-quick-utility-pay" data-bill-type="Tata Power Electricity Bill" data-bill-amount="3840" style="padding: 7px; font-size: 12px; width: 100%;">
+              Pay ₹3,840 Now →
+            </button>
+          </div>
+
+          <!-- FASTag -->
+          <div style="border: 1px solid var(--border-color); background: var(--bg-body); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 20px;">🚗</span>
+                <span style="font-size: 10px; font-weight: 700; color: #D97706; background: #FEF3C7; padding: 2px 6px; border-radius: 4px;">Low Balance</span>
+              </div>
+              <h5 style="font-size: 13px; font-weight: 700; margin: 0 0 2px 0;">NETC FASTag Recharge</h5>
+              <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 8px 0;">Vehicle DL 01 EV 2026 (BNB FASTag ID #8890)</p>
+              <div style="font-size: 16px; font-weight: 800; color: var(--text-main); font-family: var(--font-mono); margin-bottom: 10px;">₹1,500.00</div>
+            </div>
+            <button type="button" class="btn-primary-action btn-quick-utility-pay" data-bill-type="BNB NETC FASTag Recharge" data-bill-amount="1500" style="padding: 7px; font-size: 12px; width: 100%;">
+              Recharge ₹1,500 →
+            </button>
+          </div>
+
+          <!-- Mobile Postpaid -->
+          <div style="border: 1px solid var(--border-color); background: var(--bg-body); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 20px;">📱</span>
+                <span style="font-size: 10px; font-weight: 700; color: #059669; background: #D1FAE5; padding: 2px 6px; border-radius: 4px;">Active Plan</span>
+              </div>
+              <h5 style="font-size: 13px; font-weight: 700; margin: 0 0 2px 0;">Airtel 5G Postpaid</h5>
+              <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 8px 0;">Mobile: +91 98710 •••• 42 (Infinity Family)</p>
+              <div style="font-size: 16px; font-weight: 800; color: var(--text-main); font-family: var(--font-mono); margin-bottom: 10px;">₹799.00</div>
+            </div>
+            <button type="button" class="btn-primary-action btn-quick-utility-pay" data-bill-type="Airtel Postpaid 5G Bill" data-bill-amount="799" style="padding: 7px; font-size: 12px; width: 100%;">
+              Pay ₹799 Now →
+            </button>
+          </div>
+
+          <!-- Ather Grid Fast-Charge Wallet -->
+          <div style="border: 1px solid rgba(0, 210, 144, 0.4); background: #0A1922; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; color: #FFFFFF;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 20px;">⚡</span>
+                <span style="font-size: 10px; font-weight: 700; color: #00D290; background: rgba(0, 210, 144, 0.15); padding: 2px 6px; border-radius: 4px;">Ather Grid</span>
+              </div>
+              <h5 style="font-size: 13px; font-weight: 700; margin: 0 0 2px 0; color: #FFFFFF;">Ather Fast Charging Credits</h5>
+              <p style="font-size: 11px; color: #94A3B8; margin: 0 0 8px 0;">Smart wallet top-up for 1.5 km/min public charging</p>
+              <div style="font-size: 16px; font-weight: 800; color: #00D290; font-family: var(--font-mono); margin-bottom: 10px;">₹1,000.00</div>
+            </div>
+            <button type="button" class="btn-primary-action btn-quick-utility-pay" data-bill-type="Ather Grid Charging Top-Up" data-bill-amount="1000" style="background: #00D290; color: #05241C; font-weight: 800; padding: 7px; font-size: 12px; width: 100%;">
+              ⚡ Top-Up ₹1,000 →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================
+           ATHER GRID NEAR YOU: LIVE FAST CHARGING STATIONS
+           ======================================================== -->
+      <div style="background: linear-gradient(135deg, #07151D 0%, #0D262F 100%); border: 1.5px solid rgba(0, 210, 144, 0.3); border-radius: 14px; padding: 22px 24px; margin-top: 24px; color: #FFFFFF;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="pulse-dot" style="background: #00D290; box-shadow: 0 0 6px #00D290;"></span>
+              <h3 style="font-size: 17px; font-weight: 800; color: #FFFFFF; margin: 0;">Ather Grid Fast-Charging Stations Near You</h3>
+            </div>
+            <p style="font-size: 12px; color: #94A3B8; margin: 4px 0 0 0;">Live telemetry from Ather connected charging network. Auto-authenticated via your BNB Biometric Digital Key.</p>
+          </div>
+          <span style="font-size: 11px; color: #00D290; font-weight: 700; background: rgba(0, 210, 144, 0.1); border: 1px solid rgba(0, 210, 144, 0.3); padding: 4px 10px; border-radius: 12px;">⚡ 1.5 KM / Min Supercharged</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+              <strong style="font-size: 14px; color: #F8FAFC;">Connaught Place Grid #4</strong>
+              <span style="font-size: 11px; color: #00D290; font-weight: 700;">0.8 KM</span>
+            </div>
+            <div style="font-size: 12px; color: #94A3B8; margin-bottom: 8px;">Outer Circle, Block E • 2 of 4 Bays Available</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 11px; color: #CBD5E1;">Speed: <strong>Up to 1.5 km/min</strong></span>
+              <button type="button" class="btn-secondary-action btn-reserve-grid" data-station="Connaught Place Grid #4" style="background: rgba(0, 210, 144, 0.15); border-color: #00D290; color: #00D290; font-weight: 700; padding: 4px 10px; font-size: 11px;">
+                ⚡ Reserve Bay
+              </button>
+            </div>
+          </div>
+
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+              <strong style="font-size: 14px; color: #F8FAFC;">Saket Select CityWalk Grid #2</strong>
+              <span style="font-size: 11px; color: #00D290; font-weight: 700;">8.4 KM</span>
+            </div>
+            <div style="font-size: 12px; color: #94A3B8; margin-bottom: 8px;">Basement B2, EV Zone • 1 of 2 Bays Available</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 11px; color: #CBD5E1;">Speed: <strong>Up to 1.5 km/min</strong></span>
+              <button type="button" class="btn-secondary-action btn-reserve-grid" data-station="Saket Select CityWalk Grid #2" style="background: rgba(0, 210, 144, 0.15); border-color: #00D290; color: #00D290; font-weight: 700; padding: 4px 10px; font-size: 11px;">
+                ⚡ Reserve Bay
+              </button>
+            </div>
+          </div>
+
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+              <strong style="font-size: 14px; color: #F8FAFC;">Cyber Hub Gurugram Grid #1</strong>
+              <span style="font-size: 11px; color: #00D290; font-weight: 700;">12.1 KM</span>
+            </div>
+            <div style="font-size: 12px; color: #94A3B8; margin-bottom: 8px;">DLF CyberCity Hub • 4 of 4 Bays Available</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 11px; color: #CBD5E1;">Speed: <strong>Up to 1.5 km/min</strong></span>
+              <button type="button" class="btn-secondary-action btn-reserve-grid" data-station="Cyber Hub Gurugram Grid #1" style="background: rgba(0, 210, 144, 0.15); border-color: #00D290; color: #00D290; font-weight: 700; padding: 4px 10px; font-size: 11px;">
+                ⚡ Reserve Bay
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fixed Deposit & EV Loan EMI Calculator -->
+      <div class="calc-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+          <div>
+            <h3 style="font-size: 18px; font-weight: 800; color: var(--bnb-crimson);">Ather EV Loan & Fixed Deposit Financial Calculator</h3>
+            <p style="font-size: 12px; color: var(--text-muted); margin: 0;">Calculate monthly EMI for Ather 450X electric scooter or projected compound interest yields.</p>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" class="btn-secondary-action calc-tab-btn active" id="calc-tab-loan" style="padding: 5px 12px; font-size: 12px;">EV Loan EMI</button>
+            <button type="button" class="btn-secondary-action calc-tab-btn" id="calc-tab-fd" style="padding: 5px 12px; font-size: 12px;">Fixed Deposit Yield</button>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+          <div>
+            <div class="calc-slider-row">
+              <div class="calc-slider-head">
+                <span id="calc-amount-label">Vehicle Loan Amount:</span>
+                <strong id="calc-amount-val" style="color: var(--bnb-crimson); font-family: var(--font-mono);">₹1,45,000</strong>
+              </div>
+              <input type="range" class="calc-slider-input" id="slider-calc-amount" min="30000" max="1500000" step="5000" value="145000">
+            </div>
+
+            <div class="calc-slider-row">
+              <div class="calc-slider-head">
+                <span>Tenure:</span>
+                <strong id="calc-tenure-val" style="color: var(--bnb-crimson); font-family: var(--font-mono);">36 Months (3 Years)</strong>
+              </div>
+              <input type="range" class="calc-slider-input" id="slider-calc-tenure" min="6" max="60" step="6" value="36">
+            </div>
+
+            <div class="calc-slider-row">
+              <div class="calc-slider-head">
+                <span>Annual Rate of Interest:</span>
+                <strong id="calc-rate-val" style="color: var(--bnb-crimson); font-family: var(--font-mono);">8.50% p.a.</strong>
+              </div>
+              <input type="range" class="calc-slider-input" id="slider-calc-rate" min="5" max="18" step="0.25" value="8.5">
+            </div>
+          </div>
+
+          <div>
+            <div class="calc-result-grid">
+              <div class="calc-result-item">
+                <h6 id="calc-res-label1">Monthly EMI</h6>
+                <span id="calc-res-val1">₹4,576</span>
+              </div>
+              <div class="calc-result-item">
+                <h6 id="calc-res-label2">Total Interest</h6>
+                <span id="calc-res-val2" style="color: var(--bnb-gold);">₹19,736</span>
+              </div>
+              <div class="calc-result-item">
+                <h6 id="calc-res-label3">Total Payable</h6>
+                <span id="calc-res-val3" style="color: var(--accent-green);">₹1,64,736</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 16px; background: var(--bg-body); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 12px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong>Ather Grid Instant Pre-Approved EV Loan</strong>
+                <div style="color: var(--text-muted); font-size: 11px;">Zero documentation • Instant disbursement to Ather Space</div>
+              </div>
+              <button type="button" class="btn-primary-action" id="btn-apply-ev-loan" style="width: auto; padding: 6px 14px; font-size: 12px;">Instant Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 3: SYSTEM DIAGNOSTICS & TELEMETRY
+         ======================================================== -->
+    <section class="view-section" id="view-diagnostics">
+      <div class="diagnostics-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div>
+            <h2 style="font-size: 22px; font-weight: 800; color: var(--bnb-crimson);">BNB Core Banking & Biometric Telemetry</h2>
+            <p style="font-size: 13px; color: var(--text-muted);">Live verification diagnostics of Multi-User Face Matcher, Pattern Engine, and Core REST endpoints.</p>
+          </div>
+          <button type="button" class="btn-primary-action" id="btn-run-diagnostics" style="width: auto; padding: 10px 20px;">
+            <span>Run Full Diagnostic Suite</span>
+          </button>
+        </div>
+
+        <div class="diag-subsystem-grid">
+          <div class="diag-subsystem-card">
+            <h4>Multi-User Face Matcher</h4>
+            <p><strong>Status:</strong> <span style="color: var(--accent-green); font-weight: 700;">● Active</span></p>
+            <p><strong>Enrolled:</strong> 4 Profiles Loaded</p>
+            <p><strong>Distance Threshold:</strong> 0.45 Strict</p>
+            <p><strong>Cross-User Rejection:</strong> Active</p>
+          </div>
+
+          <div class="diag-subsystem-card">
+            <h4>3x3 Pattern Engine</h4>
+            <p><strong>Status:</strong> <span style="color: var(--accent-green); font-weight: 700;">● Online</span></p>
+            <p><strong>Algorithm:</strong> Coordinate Matrix Hash</p>
+            <p><strong>Brute-Force Limit:</strong> 5 Attempts</p>
+          </div>
+
+          <div class="diag-subsystem-card">
+            <h4>BNB Core Banking API</h4>
+            <p><strong>Status:</strong> <span style="color: var(--accent-green); font-weight: 700;">● Connected</span></p>
+            <p><strong>Database:</strong> ACID Ledger Store</p>
+            <p><strong>Uptime:</strong> 99.99%</p>
+          </div>
+
+          <div class="diag-subsystem-card">
+            <h4>3-Factor Security Pipeline</h4>
+            <p><strong>Status:</strong> <span style="color: var(--accent-green); font-weight: 700;">● Operational</span></p>
+            <p><strong>Pipeline:</strong> Password → Pattern → Face</p>
+            <p><strong>Session Token:</strong> 256-bit Encrypted</p>
+          </div>
+        </div>
+
+        <table class="diag-results-table">
+          <thead>
+            <tr>
+              <th>Subsystem Component</th>
+              <th>Target Identifier</th>
+              <th>Latency</th>
+              <th>Status</th>
+              <th>Diagnostic Telemetry</th>
+            </tr>
+          </thead>
+          <tbody id="diag-table-tbody">
+            <!-- Dynamically Populated -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Security Audit Trail -->
+      <div class="diagnostics-container">
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--bnb-crimson); margin-bottom: 12px;">Security Audit Trail</h3>
+        <div id="audit-log-terminal" style="background: #0F172A; color: #E2E8F0; padding: 14px; border-radius: 8px; font-family: var(--font-mono); font-size: 12px; max-height: 240px; overflow-y: auto;">
+          <!-- Dynamically Populated -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        © 2026 भारत नैशनल बैंक | BHARAT NATIONAL BANK (BNB). All Rights Reserved. Regulated by Reserve Bank of India (RBI).
+      </div>
+      <div class="footer-links-list">
+        <a href="javascript:void(0)">Security Policy</a>
+        <a href="javascript:void(0)">Biometric Guidelines</a>
+        <a href="javascript:void(0)">RBI Safe Banking</a>
+        <a href="javascript:void(0)">Customer Care</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================
+       MODAL 1: CERTIFIED ACCOUNT STATEMENT
+       ======================================================== -->
+  <div class="modal-overlay" id="modal-statement">
+    <div class="modal-card wide">
+      <button class="modal-close-btn" id="btn-close-stmt">✕</button>
+      <div class="statement-sheet">
+        <div class="statement-head">
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <div class="bnb-logo-emblem" style="width: 44px; height: 44px; font-size: 20px;">भा</div>
+            <div>
+              <h2 style="font-size: 18px; color: var(--bnb-crimson); font-weight: 800; margin: 0;">BHARAT NATIONAL BANK</h2>
+              <p style="font-size: 11px; color: var(--text-muted); margin: 0;">Retail & Digital Banking Division • Central Server Delhi</p>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div class="statement-seal">✓ RBI CERTIFIED 3FA STATEMENT</div>
+            <div style="font-size: 10px; color: var(--text-muted); margin-top: 4px;">Generated: <span id="stmt-generated-date">22-OCT-2026</span></div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; font-size: 12px; background: #F8FAFC; padding: 14px; border-radius: 8px;">
+          <div>
+            <div style="margin-bottom: 4px;"><strong>Account Name:</strong> <span id="stmt-acc-name">Rituraj Kumar</span></div>
+            <div style="margin-bottom: 4px;"><strong>Account Number:</strong> <span id="stmt-acc-num">8801000100293841</span></div>
+            <div><strong>Customer CIF:</strong> <span id="stmt-acc-cif">8801000100293841</span></div>
+          </div>
+          <div>
+            <div style="margin-bottom: 4px;"><strong>Branch:</strong> Parliament Street, New Delhi (BNBN0108900)</div>
+            <div style="margin-bottom: 4px;"><strong>Account Type:</strong> Resident Savings Bank Account</div>
+            <div><strong>Available Balance:</strong> <strong id="stmt-acc-bal" style="color: #059669;">₹4,82,500.00</strong></div>
+          </div>
+        </div>
+
+        <h4 style="font-size: 13px; font-weight: 700; color: var(--bnb-crimson); margin-bottom: 8px;">Transaction Activity (Last 30 Days)</h4>
+        <table class="statement-table">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Ref ID</th>
+              <th>Transaction Description</th>
+              <th>Type</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody id="stmt-table-body">
+            <!-- Dynamically Rendered -->
+          </tbody>
+        </table>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 14px; border-top: 1px solid #E2E8F0; flex-wrap: wrap; gap: 10px;">
+          <div style="font-size: 11px; color: var(--text-muted); max-width: 440px;">
+            This is an electronically generated and biometrically authenticated account statement. No physical signature is required. Certified under Information Technology Act 2000.
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn-secondary-action" onclick="window.print()">🖨️ Print / Save PDF</button>
+            <button class="btn-primary-action" id="btn-done-stmt" style="width: auto; padding: 8px 18px;">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 2: DIGITAL TRANSACTION RECEIPT
+       ======================================================== -->
+  <div class="modal-overlay" id="modal-receipt">
+    <div class="modal-card" style="max-width: 480px;">
+      <button class="modal-close-btn" id="btn-close-receipt">✕</button>
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="width: 52px; height: 52px; border-radius: 50%; background: #ECFDF5; color: #10B981; font-size: 26px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px;">✓</div>
+        <h3 style="font-size: 18px; color: var(--text-main); font-weight: 800; margin: 0;">Payment Receipt</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin: 0;">Bharat National Bank Core Banking</p>
+      </div>
+
+      <div style="background: var(--bg-body); border: 1px dashed var(--border-color); border-radius: 12px; padding: 18px; font-size: 13px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+          <span style="color: var(--text-muted);">Amount</span>
+          <strong id="receipt-amount" style="font-size: 18px; color: var(--bnb-crimson);">₹0.00</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: var(--text-muted);">Transaction Ref</span>
+          <span id="receipt-id" style="font-family: var(--font-mono); font-weight: 700;">TXN-000000</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: var(--text-muted);">Date & Time</span>
+          <span id="receipt-date">Today</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: var(--text-muted);">Description</span>
+          <span id="receipt-desc" style="font-weight: 600; text-align: right; max-width: 220px;">Funds Transfer</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+          <span style="color: var(--text-muted);">Status</span>
+          <span style="background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; padding: 2px 8px; border-radius: 12px; font-weight: 700; font-size: 11px;">Completed (IMPS/NEFT)</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-muted);">Security Handshake</span>
+          <span style="color: #059669; font-weight: 700; font-size: 11px;">3FA Biometric Confirmed</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <button class="btn-secondary-action" onclick="window.print()" style="flex: 1;">🖨️ Print Slip</button>
+        <button class="btn-primary-action" id="btn-done-receipt" style="flex: 1;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 3: FORGOT PASSWORD / OTP SIMULATOR
+       ======================================================== -->
+  <div class="modal-overlay" id="modal-forgot-pw">
+    <div class="modal-card" style="max-width: 440px;">
+      <button class="modal-close-btn" id="btn-close-forgot">✕</button>
+      <h3 style="font-size: 18px; color: var(--bnb-crimson); font-weight: 800; margin-bottom: 6px;">Reset NetBanking Password</h3>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">We will send a 6-digit cryptographic OTP to your registered Aadhaar mobile number.</p>
+
+      <form id="form-forgot-pw">
+        <div class="input-row" id="forgot-mobile-group">
+          <label>Registered Mobile Number / Customer ID</label>
+          <input type="text" class="text-input" id="forgot-mobile-input" value="+91 98765 43210" required />
+        </div>
+        <div class="input-row" id="forgot-otp-group" style="display: none;">
+          <label>Enter 6-Digit One-Time Password (OTP)</label>
+          <input type="text" class="text-input" id="forgot-otp-input" placeholder="Enter 6-digit OTP (e.g. 882144)" maxlength="6" />
+          <div style="font-size: 11px; color: #059669; margin-top: 4px;">✓ Simulated OTP sent to your device: <strong>882144</strong></div>
+        </div>
+        <div class="input-row" id="forgot-new-pw-group" style="display: none;">
+          <label>Create New Password</label>
+          <input type="password" class="text-input" id="forgot-new-pw-input" placeholder="Enter new strong password" />
+        </div>
+
+        <button type="button" class="btn-primary-action" id="btn-request-otp" style="margin-top: 10px;">
+          Send OTP to Mobile →
+        </button>
+        <button type="button" class="btn-primary-action" id="btn-verify-otp" style="margin-top: 10px; display: none;">
+          Verify OTP & Save Password →
+        </button>
+      </form>
+      <div class="status-msg-box" id="forgot-status-msg"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 4: SET GREEN PIN
+       ======================================================== -->
+  <div class="modal-overlay" id="modal-set-pin">
+    <div class="modal-card" style="max-width: 420px;">
+      <button class="modal-close-btn" id="btn-close-pin">✕</button>
+      <h3 style="font-size: 18px; color: var(--bnb-crimson); font-weight: 800; margin-bottom: 6px;">Set RuPay Green PIN</h3>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">Generate or update your 4-digit ATM & POS security PIN instantly.</p>
+
+      <form id="form-set-pin">
+        <div class="input-row">
+          <label>New 4-Digit PIN</label>
+          <input type="password" maxlength="4" class="text-input" id="new-pin-input" placeholder="••••" required style="font-size: 20px; letter-spacing: 8px; text-align: center;" />
+        </div>
+        <div class="input-row">
+          <label>Confirm 4-Digit PIN</label>
+          <input type="password" maxlength="4" class="text-input" id="confirm-pin-input" placeholder="••••" required style="font-size: 20px; letter-spacing: 8px; text-align: center;" />
+        </div>
+        <button type="submit" class="btn-primary-action" style="margin-top: 10px;">
+          Set Instant Green PIN →
+        </button>
+      </form>
+      <div class="status-msg-box" id="set-pin-status"></div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL 5: ATHER ENERGY AI GENERALIST (DESIGN) SPEC DOSSIER
+       ======================================================== -->
+  <div class="modal-overlay" id="modal-portfolio-spec">
+    <div class="modal-card wide">
+      <button class="modal-close-btn" id="btn-close-spec">✕</button>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid #00D290; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <span class="ev-badge-pill" style="margin-bottom: 8px;">ATHER ENERGY • PORTFOLIO SUBMISSION</span>
+          <h2 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin: 0;">AI Generalist (Design) Project Dossier</h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Candidate: Rituraj Kumar • SRM Institute of Science and Technology • 3FA Biometrics & Connected EV Ecosystem</p>
+        </div>
+        <span style="background: #00D290; color: #09131F; font-weight: 800; font-size: 12px; padding: 6px 12px; border-radius: 6px;">JD ALIGNED</span>
+      </div>
+
+      <div class="spec-section">
+        <h4><span>🧠</span> 1. AI-Based Design & Cognitive HMI Architecture</h4>
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+          This platform demonstrates end-to-end integration of edge Computer Vision into human-facing interfaces. Designed specifically for smart connected environments (such as Ather's vehicle cluster and digital key ecosystem), the system blends multi-factor authentication with minimal user cognitive friction.
+        </p>
+        <div class="spec-grid-2">
+          <div class="spec-card">
+            <h5 style="color: var(--bnb-crimson); font-size: 13px; font-weight: 700; margin-bottom: 4px;">Neural Face Biometrics Pipeline</h5>
+            <ul style="font-size: 12px; color: var(--text-muted); padding-left: 18px; line-height: 1.6;">
+              <li><strong>Edge Detection:</strong> TinyFaceDetector running at 60 FPS in WebGL hardware accelerator.</li>
+              <li><strong>Tensor Embeddings:</strong> SSD MobileNet V1 generating 128-dimensional facial feature vectors.</li>
+              <li><strong>Distance Metric:</strong> Euclidean L2 threshold at 0.45 providing strict 99.4% cross-user separation.</li>
+              <li><strong>Live Reticle HUD:</strong> Dynamic visual feedback reticle that transitions between tracking, matching, and rejection states.</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5 style="color: #00D290; font-size: 13px; font-weight: 700; margin-bottom: 4px;">Tactile 3x3 Permutation Matrix</h5>
+            <ul style="font-size: 12px; color: var(--text-muted); padding-left: 18px; line-height: 1.6;">
+              <li><strong>Fitts's Law Optimization:</strong> 36px hit radius per node with tactile micro-sound feedback.</li>
+              <li><strong>Multi-Input Ergonomics:</strong> Supports continuous gesture drag, touch swipe, and discrete sequential tap.</li>
+              <li><strong>Entropy Defense:</strong> Exponential lockout after 5 consecutive failed attempts.</li>
+              <li><strong>Automotive Adaptability:</strong> High-contrast touch target design suitable for scooter dashboard touchscreens.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-section">
+        <h4><span>⚡</span> 2. Vehicle & Connected Mobility Integration (Ather Ecosystem)</h4>
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+          Bridging biometric security directly into Ather's connected electric vehicle framework:
+        </p>
+        <div class="spec-grid-2">
+          <div class="spec-card">
+            <h5 style="font-size: 13px; font-weight: 700; color: #00D290; margin-bottom: 4px;">Biometric Smart Digital Key</h5>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+              Eliminates physical key fobs. The rider completes a 1-second 3FA facial scan on their smartphone or helmet HUD, unlocking the Ather 450X motor controller via Bluetooth Low Energy (BLE) and cloud telemetry.
+            </p>
+          </div>
+          <div class="spec-card">
+            <h5 style="font-size: 13px; font-weight: 700; color: #00D290; margin-bottom: 4px;">Ather Grid Fast-Charge AutoPay</h5>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+              Plug & Charge protocol: When connecting to an Ather Grid charging stall, the vehicle handshake directly authenticates and debits the rider's linked savings account with zero manual intervention.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-section">
+        <h4><span>🎨</span> 3. Design System & Human-Machine Interface (HMI) Principles</h4>
+        <div class="spec-grid-2">
+          <div class="spec-card">
+            <h5 style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">Design Tokens & Accessibility</h5>
+            <ul style="font-size: 12px; color: var(--text-muted); padding-left: 18px; line-height: 1.6;">
+              <li><strong>Primary Brand:</strong> Crimson #800020 & Ather Mint #00D290 (WCAG AAA compliant contrast).</li>
+              <li><strong>Typography:</strong> Plus Jakarta Sans (humanist display) + JetBrains Mono (cryptographic telemetry).</li>
+              <li><strong>Dual-Theming:</strong> Dynamic Dark/Cyberpunk Mode for night rides & Light Mode for daylight clarity.</li>
+            </ul>
+          </div>
+          <div class="spec-card">
+            <h5 style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">Sonic UX & Haptics</h5>
+            <ul style="font-size: 12px; color: var(--text-muted); padding-left: 18px; line-height: 1.6;">
+              <li>Synthesized Web Audio API soundscapes (no asset bloat, 0ms latency).</li>
+              <li>Distinct audio signatures for pattern node lock, biometric scan laser, and payment authorizations.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: right; margin-top: 18px;">
+        <button class="btn-primary-action" id="btn-done-spec" style="width: auto; padding: 10px 24px;">Close Dossier</button>
+      </div>
+    </div>
+  </div>
+</body>
 </html>
